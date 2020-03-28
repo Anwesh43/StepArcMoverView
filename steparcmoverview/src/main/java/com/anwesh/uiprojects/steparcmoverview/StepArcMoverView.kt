@@ -14,8 +14,8 @@ import android.graphics.Color
 import android.graphics.Canvas
 
 val nodes : Int = 5
-val parts : Int = 3
-val scGap : Float = 0.02f
+val parts : Int = 4
+val scGap : Float = 0.02f / parts
 val delay : Long = 20
 val deg : Float = 360f
 val sizeFactor : Float = 2.9f
@@ -28,7 +28,7 @@ fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
 fun Canvas.drawStepArcMover(scale : Float, w : Float, size : Float, paint : Paint) {
-    val degPart : Float = 360f / parts
+    val degPart : Float = deg / parts
     val scDiv : Double = 1.0 / parts
     val k : Int = Math.floor(scale.sinify() / scDiv).toInt()
     val sf : Float = scale.sinify().divideScale(k, parts)
@@ -36,8 +36,8 @@ fun Canvas.drawStepArcMover(scale : Float, w : Float, size : Float, paint : Pain
     val sf2 : Float = sf.divideScale(1, 2)
     val gap : Float = (w - 2 * size) / parts
     save()
-    translate(size + gap * k + gap * sf1, 0f)
-    drawArc(RectF(-size, -size, size, size), 0f, degPart * k + degPart * sf2, true, paint)
+    translate(size + gap * k + gap * sf2, 0f)
+    drawArc(RectF(-size, -size, size, size), 0f, degPart * k + degPart * sf1, true, paint)
     restore()
 }
 
