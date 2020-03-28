@@ -204,4 +204,13 @@ class StepArcMoverView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : StepArcMoverView {
+            val view : StepArcMoverView = StepArcMoverView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
