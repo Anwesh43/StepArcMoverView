@@ -27,3 +27,29 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
+fun Canvas.drawStepArcMover(scale : Float, w : Float, size : Float, paint : Paint) {
+    val degPart : Float = 360f / parts
+    val scDiv : Double = 1.0 / parts
+    val k : Int = Math.floor(scale.sinify() / scDiv).toInt()
+    val sf : Float = scale.sinify().divideScale(k, parts)
+    val sf1 : Float = sf.divideScale(0, 2)
+    val sf2 : Float = sf.divideScale(1, 2)
+    val gap : Float = (w - 2 * size) / parts
+    save()
+    translate(size + gap * k + gap * sf1, 0f)
+    drawArc(RectF(-size, -size, size, size), 0f, degPart * k + degPart * sf2, true, paint)
+    restore()
+}
+
+fun Canvas.drawSAMNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    save()
+    translate(0f, gap * (i + 1))
+    drawStepArcMover(scale, w, size, paint)
+    restore()
+}
+
