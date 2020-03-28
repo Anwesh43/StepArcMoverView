@@ -179,4 +179,26 @@ class StepArcMoverView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : StepArcMoverView) {
+
+        private val animator : Animator = Animator(view)
+        private val sam : StepArcMover = StepArcMover(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            sam.draw(canvas, paint)
+            animator.animate {
+                sam.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sam.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
